@@ -1,0 +1,13 @@
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    brand_id INT,
+    shape_id INT,
+    series_id INT,
+    model_name VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (brand_id) REFERENCES brands(id) ON DELETE SET NULL,
+    FOREIGN KEY (shape_id) REFERENCES body_shapes(id) ON DELETE SET NULL,
+    FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE SET NULL
+);
