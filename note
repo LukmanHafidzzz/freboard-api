@@ -4,7 +4,7 @@ For Database:
 1. brands: id, brand_name, country, created_at, updated_at
 2. body_shapes: id, shape_name, created_at, updated_at
 3. product: id, brand_id, shape_id, model_name, created_at, updated_at
-4. spesifications: id, product_id, body_material, neck_material, fretboard_material, bridge_type, pickup_config, scale_length, created_at, updated_at
+4. specifications: id, product_id, body_material, neck_material, fretboard_material, bridge_type, pickup_config, scale_length, created_at, updated_at
 
 relations:
 1. Brands ke Product (1:N)

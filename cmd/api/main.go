@@ -1,11 +1,15 @@
 package main
 
 import (
-	"log"
+	v1 "guitar-api/api/v1"
 	"guitar-api/internal/config"
-	
-	"github.com/gin-gonic/gin"
+	"guitar-api/internal/handlers"
+	"guitar-api/internal/services"
+	"log"
+
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -14,7 +18,19 @@ func main() {
 	config.LoadEnv()
 	config.NewDB()
 
+	brandService := &services.BrandService{
+		DB: config.DB,
+	}
+
+	brandHandler := &handlers.BrandHandler{
+		Service: brandService,
+	}
+
 	router := gin.Default()
+	
+	v1Router := router.Group("/api/v1")
+	v1.SetupBrandRoutes(v1Router, brandHandler)
+
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "pong",
