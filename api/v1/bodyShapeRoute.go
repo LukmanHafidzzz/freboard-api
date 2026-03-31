@@ -10,5 +10,6 @@ func SetupBodyShapeRoutes(router *gin.RouterGroup, handler *handlers.BodyShapeHa
 	{
 		bodyShapeRoutes.GET("", handler.GetBodyShapes)
 		bodyShapeRoutes.GET("/:id", handler.GetBodyShapeById)
+		bodyShapeRoutes.GET("/:id/products", handler.GetProductsByBodyShapeId)
 	}
 }

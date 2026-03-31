@@ -39,3 +39,20 @@ func (service *BodyShapeService) GetBodyShapeById(id int) (*models.BodyShape, er
 	}
 	return &bodyShape, nil
 }
+
+func (service *BodyShapeService) GetAllProductsByBodyShapeId(id int) ([]models.Product, error) {
+	rows, err := service.DB.Query(`SELECT bs.id, bs.shape_name, p.id, p.model_name, b.id, b.brand_name FROM products p JOIN body_shapes bs ON p.shape_id = bs.id JOIN brands b ON p.brand_id = b.id WHERE bs.id = ?`, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var products []models.Product
+	for rows.Next() {
+		var product models.Product
+		product.Brand = &models.Brand{}
+		product.BodyShape = &models.BodyShape{}
+		rows.Scan(&product.BodyShape.ID, &product.BodyShape.ShapeName, &product.ID, &product.ModelName, &product.Brand.ID, &product.Brand.BrandName)
+		products = append(products, product)
+	}
+	return products, nil
+}
