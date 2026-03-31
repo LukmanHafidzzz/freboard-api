@@ -10,5 +10,6 @@ func SetupBrandRoutes(router *gin.RouterGroup, handler *handlers.BrandHandler) {
 	{
 		brandRoutes.GET("", handler.GetBrands)
 		brandRoutes.GET("/:id", handler.GetBrandById)
+		brandRoutes.GET("/:id/products", handler.GetProductsByBrandId)
 	}
 }

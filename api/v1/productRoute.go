@@ -10,5 +10,6 @@ func SetupProductRoutes(router *gin.RouterGroup, handler *handlers.ProductHandle
 	productRoutes := router.Group("/products")
 	{
 		productRoutes.GET("", handler.GetProducts)
+		productRoutes.GET("/:id", handler.GetProductById)
 	}
 }

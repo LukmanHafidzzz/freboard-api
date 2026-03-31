@@ -5,7 +5,6 @@ import (
 	"guitar-api/internal/services"
 	"net/http"
 	"strconv"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -41,4 +40,22 @@ func (handler *BrandHandler) GetBrandById(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{"data": brand})
+}
+
+func (handler *BrandHandler) GetProductsByBrandId(ctx *gin.Context) {
+	id, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
+		return
+	}
+	product, err := handler.Service.GetAllProductsByBrandId(id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	if product == nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "product not found"})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"data": product})
 }
