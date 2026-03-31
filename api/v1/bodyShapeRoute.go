@@ -9,5 +9,6 @@ func SetupBodyShapeRoutes(router *gin.RouterGroup, handler *handlers.BodyShapeHa
 	bodyShapeRoutes := router.Group("/body-shapes")
 	{
 		bodyShapeRoutes.GET("", handler.GetBodyShapes)
+		bodyShapeRoutes.GET("/:id", handler.GetBodyShapeById)
 	}
 }

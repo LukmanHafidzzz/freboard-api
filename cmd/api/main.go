@@ -33,11 +33,20 @@ func main() {
 		Service: bodyShapeService,
 	}
 
+	productService := &services.ProductService{
+		DB: config.DB,
+	}
+
+	productHandler := &handlers.ProductHandler{
+		Service: productService,
+	}
+
 	router := gin.Default()
 	
 	v1Router := router.Group("/api/v1")
 	v1.SetupBrandRoutes(v1Router, brandHandler)
 	v1.SetupBodyShapeRoutes(v1Router, bodyShapeHandler)
+	v1.SetupProductRoutes(v1Router, productHandler)
 
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
