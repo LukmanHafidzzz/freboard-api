@@ -49,7 +49,7 @@ func main() {
 	v1.SetupProductRoutes(v1Router, productHandler)
 
 	srv := &http.Server{
-		Addr:         ":" + config.GetEnv("APP_PORT"),
+		Addr:         ":" + config.GetEnv("PORT"),
 		Handler:      router,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
@@ -57,7 +57,7 @@ func main() {
 	}
 
 	go func() {
-		log.Println("Server running on port " + config.GetEnv("APP_PORT"))
+		log.Println("Server running on port " + config.GetEnv("PORT"))
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatal("Server error: ", err)
 		}
