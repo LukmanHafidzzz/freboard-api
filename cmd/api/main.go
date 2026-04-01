@@ -47,9 +47,15 @@ func main() {
 	v1.SetupBrandRoutes(v1Router, brandHandler)
 	v1.SetupBodyShapeRoutes(v1Router, bodyShapeHandler)
 	v1.SetupProductRoutes(v1Router, productHandler)
+	router.Use(func(c *gin.Context) {
+		start := time.Now()
+		c.Next()
+		latency := time.Since(start)
+		log.Printf("[%s] %s → %v", c.Request.Method, c.Request.URL.Path, latency)
+	})
 
 	srv := &http.Server{
-		Addr:         ":" + config.GetEnv("APP_PORT"),
+		Addr:         ":" + config.GetEnv("PORT"),
 		Handler:      router,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
@@ -57,7 +63,7 @@ func main() {
 	}
 
 	go func() {
-		log.Println("Server running on port " + config.GetEnv("APP_PORT"))
+		log.Println("Server running on port " + config.GetEnv("PORT"))
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatal("Server error: ", err)
 		}
