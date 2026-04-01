@@ -3,6 +3,8 @@ package services
 import (
 	"database/sql"
 	"guitar-api/internal/models"
+	"log"
+	"time"
 )
 
 type BrandService struct {
@@ -10,7 +12,9 @@ type BrandService struct {
 }
 
 func (service *BrandService) GetAllBrands() ([]models.Brand, error) {
+	start := time.Now()
 	rows, err := service.DB.Query("SELECT id, brand_name FROM brands")
+	log.Printf("DB query took: %v", time.Since(start))
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +34,9 @@ func (service *BrandService) GetAllBrands() ([]models.Brand, error) {
 
 func (service *BrandService) GetBrandById(id int) (*models.Brand, error) {
 	var brand models.Brand
+	start := time.Now()
 	err := service.DB.QueryRow("SELECT id, brand_name FROM brands WHERE id = ?", id).Scan(&brand.ID, &brand.BrandName)
+	log.Printf("DB query took: %v", time.Since(start))
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
@@ -41,7 +47,9 @@ func (service *BrandService) GetBrandById(id int) (*models.Brand, error) {
 }
 
 func (service *BrandService) GetAllProductsByBrandId(id int) ([]models.Product, error) {
+	start := time.Now()
 	rows, err := service.DB.Query(`SELECT b.id, b.brand_name, p.id, p.model_name, bs.id, bs.shape_name FROM products p JOIN brands b ON p.brand_id = b.id JOIN body_shapes bs ON p.shape_id = bs.id WHERE b.id = ?`, id)
+	log.Printf("DB query took: %v", time.Since(start))
 	if err != nil {
 		return nil, err
 	}
