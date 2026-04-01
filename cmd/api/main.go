@@ -47,6 +47,12 @@ func main() {
 	v1.SetupBrandRoutes(v1Router, brandHandler)
 	v1.SetupBodyShapeRoutes(v1Router, bodyShapeHandler)
 	v1.SetupProductRoutes(v1Router, productHandler)
+	router.Use(func(c *gin.Context) {
+		start := time.Now()
+		c.Next()
+		latency := time.Since(start)
+		log.Printf("[%s] %s → %v", c.Request.Method, c.Request.URL.Path, latency)
+	})
 
 	srv := &http.Server{
 		Addr:         ":" + config.GetEnv("PORT"),
